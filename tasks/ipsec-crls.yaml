@@ -1,0 +1,26 @@
+---
+
+- name: Setup CRLs in /etc/ipsec.d/crls/
+  copy:
+    content: "{{ item.value }}"
+    dest: "/etc/ipsec.d/crls/{{ item.key }}"
+    owner: root
+    group: root
+    mode: 0600
+  with_dict: "{{ strongswan_crls }}"
+  no_log: true
+  notify:
+  - ipsec rereadall and reload
+
+- name: List /etc/ipsec.d/crls/ to cleanup
+  shell: ls -1 /etc/ipsec.d/crls/
+  register: __crls_list
+
+- name: Remove unused CRLs in /etc/ipsec.d/crls/
+  file:
+    path: "/etc/ipsec.d/crls/{{ item }}"
+    state: absent
+  with_items: "{{ __crls_list.stdout_lines }}"
+  when: item not in strongswan_crls.keys()
+  notify:
+  - ipsec rereadall and reload

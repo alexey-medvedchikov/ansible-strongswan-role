@@ -1,0 +1,26 @@
+---
+
+- name: Setup certs in /etc/ipsec.d/certs/
+  copy:
+    content: "{{ item.value }}"
+    dest: "/etc/ipsec.d/certs/{{ item.key }}"
+    owner: root
+    group: root
+    mode: 0600
+  with_dict: "{{ strongswan_certs }}"
+  no_log: true
+  notify:
+  - ipsec rereadall and reload
+
+- name: List /etc/ipsec.d/certs/ to cleanup
+  shell: ls -1 /etc/ipsec.d/certs/
+  register: __certs_list
+
+- name: Remove unused certs in /etc/ipsec.d/certs/
+  file:
+    path: "/etc/ipsec.d/certs/{{ item }}"
+    state: absent
+  with_items: "{{ __certs_list.stdout_lines }}"
+  when: item not in strongswan_certs.keys()
+  notify:
+  - ipsec rereadall and reload

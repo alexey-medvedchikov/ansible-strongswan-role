@@ -1,0 +1,26 @@
+---
+
+- name: Setup CAs in /etc/ipsec.d/cacerts/
+  copy:
+    content: "{{ item.value }}"
+    dest: "/etc/ipsec.d/cacerts/{{ item.key }}"
+    owner: root
+    group: root
+    mode: 0600
+  with_dict: "{{ strongswan_cacerts }}"
+  no_log: true
+  notify:
+  - ipsec rereadall and reload
+
+- name: List /etc/ipsec.d/cacerts/ to cleanup
+  shell: ls -1 /etc/ipsec.d/cacerts/
+  register: __cacerts_list
+
+- name: Remove unused CAs in /etc/ipsec.d/cacerts/
+  file:
+    path: "/etc/ipsec.d/cacerts/{{ item }}"
+    state: absent
+  with_items: "{{ __cacerts_list.stdout_lines }}"
+  when: item not in strongswan_cacerts.keys()
+  notify:
+  - ipsec rereadall and reload

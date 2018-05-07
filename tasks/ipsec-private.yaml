@@ -1,0 +1,26 @@
+---
+
+- name: Setup private keys in /etc/ipsec.d/private/
+  copy:
+    content: "{{ item.value }}"
+    dest: "/etc/ipsec.d/private/{{ item.key }}"
+    owner: root
+    group: root
+    mode: 0600
+  with_dict: "{{ strongswan_private }}"
+  no_log: true
+  notify:
+  - ipsec rereadall and reload
+
+- name: List /etc/ipsec.d/private/ to cleanup
+  shell: ls -1 /etc/ipsec.d/private/
+  register: __private_list
+
+- name: Remove unused private keys in /etc/ipsec.d/private/
+  file:
+    path: "/etc/ipsec.d/private/{{ item }}"
+    state: absent
+  with_items: "{{ __private_list.stdout_lines }}"
+  when: item not in strongswan_private.keys()
+  notify:
+  - ipsec rereadall and reload

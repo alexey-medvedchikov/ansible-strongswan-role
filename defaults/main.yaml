@@ -1,0 +1,13 @@
+---
+
+strongswan_packages:
+- strongswan-pki
+- strongswan-starter
+
+strongswan_connections: []
+strongswan_cacerts: {}
+strongswan_certs: {}
+strongswan_crls: {}
+strongswan_private: {}
+
+strongswan_manage_forwarding: false

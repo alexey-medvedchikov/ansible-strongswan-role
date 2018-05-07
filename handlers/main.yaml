@@ -1,0 +1,4 @@
+---
+
+- name: ipsec rereadall and reload
+  shell: ipsec rereadall && ipsec reload

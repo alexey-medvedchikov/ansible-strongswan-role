@@ -1,0 +1,7 @@
+config setup
+
+{% for name, config in strongswan_connections.items() %}
+conn {{ name }}
+  {{ config | indent(2) }}
+
+{% endfor %}
