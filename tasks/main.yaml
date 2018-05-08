@@ -66,3 +66,7 @@
   - name: net.ipv6.conf.all.forwarding
     value: 0
   when: strongswan_manage_forwarding is defined and strongswan_manage_forwarding
+
+- name: Restart strongswan
+  shell: ipsec restart
+  when: strongswan_restart

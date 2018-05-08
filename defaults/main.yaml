@@ -11,3 +11,4 @@ strongswan_crls: {}
 strongswan_private: {}
 
 strongswan_manage_forwarding: false
+stringswan_restart: false
