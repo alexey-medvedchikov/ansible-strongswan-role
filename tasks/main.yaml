@@ -69,4 +69,4 @@
 
 - name: Restart strongswan
   shell: ipsec restart
-  when: strongswan_restart
+  when: strongswan_restart is defined and strongswan_restart
