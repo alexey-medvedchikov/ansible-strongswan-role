@@ -1,0 +1,26 @@
+---
+
+- name: Setup aacerts in /etc/ipsec.d/aacerts/
+  copy:
+    content: "{{ item.value }}"
+    dest: "/etc/ipsec.d/aacerts/{{ item.key }}"
+    owner: root
+    group: root
+    mode: 0600
+  with_dict: "{{ strongswan_aacerts }}"
+  no_log: true
+  notify:
+  - ipsec reload
+
+- name: List /etc/ipsec.d/aacerts/ to cleanup
+  shell: ls -1 /etc/ipsec.d/aacerts/
+  register: __aacerts_list
+
+- name: Remove unused aacerts in /etc/ipsec.d/aacerts/
+  file:
+    path: "/etc/ipsec.d/aacerts/{{ item }}"
+    state: absent
+  with_items: "{{ __aacerts_list.stdout_lines }}"
+  when: item not in strongswan_aacerts.keys()
+  notify:
+  - ipsec reload

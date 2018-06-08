@@ -2,9 +2,16 @@
 
 ## Example configuration
 
+To set `config setup` section use:
+
+```yaml
+strongswan_config: |-
+  charondebug="cfg 2"
+```
+
 `strongswan_cacerts` is for CA certificates:
 
-```plain
+```yaml
 strongswan_cacerts:
   ca.pem: |-
     -----BEGIN CERTIFICATE-----
@@ -16,33 +23,22 @@ strongswan_cacerts:
     -----END CERTIFICATE-----
 ```
 
-`strongswan_certs` is for end entity certificates:
+Also all types of file-based credentials available:
 
-```plain
-strongswan_certs:
-  some.server.tld.pem: |-
-    -----BEGIN CERTIFICATE-----
-    ...
-    -----END CERTIFICATE-----
-  my.peer.tld.pem: |-
-    -----BEGIN CERTIFICATE-----
-    ...
-    -----END CERTIFICATE-----
-```
-
-`strongswan_private` is for private keys:
-
-```plain
-strongswan_private:
-  some.server.tld-key.pem: |-
-    -----BEGIN RSA PRIVATE KEY-----
-    ...
-    -----END RSA PRIVATE KEY-----
+```yaml
+strongswan_aacerts: {}
+strongswan_acerts: {}
+strongswan_cacerts: {}
+strongswan_certs: {}
+strongswan_crls: {}
+strongswan_ocspcerts: {}
+strongswan_private: {}
+strongswan_reqs: {}
 ```
 
 List connections in ipsec.conf format:
 
-```plain
+```yaml
 strongswan_connections:
   '%default': |-
     ikelifetime=60m
@@ -75,3 +71,7 @@ Specify secrets:
 strongswan_secrets:
   - ': RSA some.server.tld-key.pem'
 ```
+
+## Authors
+
+* Alexey Medvedchikov <alexey.medvedchikov@gmail.com>

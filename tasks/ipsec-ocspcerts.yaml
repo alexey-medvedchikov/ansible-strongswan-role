@@ -1,0 +1,26 @@
+---
+
+- name: Setup ocspcerts in /etc/ipsec.d/ocspcerts/
+  copy:
+    content: "{{ item.value }}"
+    dest: "/etc/ipsec.d/ocspcerts/{{ item.key }}"
+    owner: root
+    group: root
+    mode: 0600
+  with_dict: "{{ strongswan_ocspcerts }}"
+  no_log: true
+  notify:
+  - ipsec reload
+
+- name: List /etc/ipsec.d/ocspcerts/ to cleanup
+  shell: ls -1 /etc/ipsec.d/ocspcerts/
+  register: __ocspcerts_list
+
+- name: Remove unused ocspcerts in /etc/ipsec.d/ocspcerts/
+  file:
+    path: "/etc/ipsec.d/ocspcerts/{{ item }}"
+    state: absent
+  with_items: "{{ __ocspcerts_list.stdout_lines }}"
+  when: item not in strongswan_ocspcerts.keys()
+  notify:
+  - ipsec reload

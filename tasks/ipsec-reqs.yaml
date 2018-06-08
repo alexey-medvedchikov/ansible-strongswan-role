@@ -1,0 +1,26 @@
+---
+
+- name: Setup reqs in /etc/ipsec.d/reqs/
+  copy:
+    content: "{{ item.value }}"
+    dest: "/etc/ipsec.d/reqs/{{ item.key }}"
+    owner: root
+    group: root
+    mode: 0600
+  with_dict: "{{ strongswan_reqs }}"
+  no_log: true
+  notify:
+  - ipsec reload
+
+- name: List /etc/ipsec.d/reqs/ to cleanup
+  shell: ls -1 /etc/ipsec.d/reqs/
+  register: __reqs_list
+
+- name: Remove unused reqs in /etc/ipsec.d/reqs/
+  file:
+    path: "/etc/ipsec.d/reqs/{{ item }}"
+    state: absent
+  with_items: "{{ __reqs_list.stdout_lines }}"
+  when: item not in strongswan_reqs.keys()
+  notify:
+  - ipsec reload
