@@ -10,7 +10,7 @@
   with_dict: "{{ strongswan_certs }}"
   no_log: true
   notify:
-  - ipsec rereadall and reload
+  - ipsec reload
 
 - name: List /etc/ipsec.d/certs/ to cleanup
   shell: ls -1 /etc/ipsec.d/certs/
@@ -23,4 +23,4 @@
   with_items: "{{ __certs_list.stdout_lines }}"
   when: item not in strongswan_certs.keys()
   notify:
-  - ipsec rereadall and reload
+  - ipsec reload

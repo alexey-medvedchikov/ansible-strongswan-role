@@ -1,4 +1,4 @@
 ---
 
-- name: ipsec rereadall and reload
-  shell: ipsec rereadall && ipsec reload
+- name: ipsec reload
+  shell: ipsec update && ipsec rereadall

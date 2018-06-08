@@ -1,0 +1,26 @@
+---
+
+- name: Setup acerts in /etc/ipsec.d/acerts/
+  copy:
+    content: "{{ item.value }}"
+    dest: "/etc/ipsec.d/acerts/{{ item.key }}"
+    owner: root
+    group: root
+    mode: 0600
+  with_dict: "{{ strongswan_acerts }}"
+  no_log: true
+  notify:
+  - ipsec reload
+
+- name: List /etc/ipsec.d/acerts/ to cleanup
+  shell: ls -1 /etc/ipsec.d/acerts/
+  register: __acerts_list
+
+- name: Remove unused acerts in /etc/ipsec.d/acerts/
+  file:
+    path: "/etc/ipsec.d/acerts/{{ item }}"
+    state: absent
+  with_items: "{{ __acerts_list.stdout_lines }}"
+  when: item not in strongswan_acerts.keys()
+  notify:
+  - ipsec reload

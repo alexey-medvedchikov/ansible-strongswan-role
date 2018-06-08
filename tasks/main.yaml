@@ -14,7 +14,7 @@
     group: root
     mode: 0600
   notify:
-  - ipsec rereadall and reload
+  - ipsec reload
 
 - name: Create dirs for file-based credentials
   file:
@@ -24,19 +24,26 @@
     group: root
     mode: 0700
   with_items:
-  - private
-  - certs
-  - crls
-  - cacerts
-  - ocspcerts
   - aacerts
   - acerts
+  - cacerts
+  - certs
+  - crls
+  - ocspcerts
+  - private
   - reqs
 
-- include: ipsec-private.yaml
-- include: ipsec-certs.yaml
-- include: ipsec-crls.yaml
-- include: ipsec-cacerts.yaml
+- name: Configure file-based credentials
+  include: "ipsec-{{ item }}.yaml"
+  with_items:
+  - aacerts
+  - acerts
+  - cacerts
+  - certs
+  - crls
+  - ocspcerts
+  - private
+  - reqs
 
 - name: Start ipsec service
   service:
@@ -52,21 +59,4 @@
     group: root
     mode: 0600
   notify:
-  - ipsec rereadall and reload
-
-- name: Configure sysctl
-  sysctl:
-    name: "{{ item.name }}"
-    value: "{{ item.value }}"
-  with_items:
-  - name: net.ipv4.ip_forward
-    value: 1
-  - name: net.ipv4.conf.all.forwarding
-    value: 1
-  - name: net.ipv6.conf.all.forwarding
-    value: 0
-  when: strongswan_manage_forwarding is defined and strongswan_manage_forwarding
-
-- name: Restart strongswan
-  shell: ipsec restart
-  when: strongswan_restart is defined and strongswan_restart
+  - ipsec reload
