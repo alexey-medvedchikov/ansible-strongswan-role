@@ -1,5 +1,5 @@
 config setup
-{{ strongswan_config | indent(2) }}
+  {{ strongswan_config | indent(2) }}
 
 {% for name in strongswan_connections.keys() %}
 conn {{ name }}
