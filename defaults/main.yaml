@@ -14,6 +14,6 @@ strongswan_ocspcerts: {}
 strongswan_private: {}
 strongswan_reqs: {}
 
-strongswan_connections: []
+strongswan_connections: {}
 strongswan_config: |-
   charondebug="dmn 2, mgr 2, ike 2, chd 2, job 2, cfg 2, knl 2, net 2, asn 2, enc 2, lib 2, esp 2, tls 2, tnc 2, imc 2, imv 2, pts 2"
