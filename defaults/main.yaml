@@ -13,6 +13,7 @@ strongswan_crls: {}
 strongswan_ocspcerts: {}
 strongswan_private: {}
 strongswan_reqs: {}
+strongswan_secrets: []
 
 strongswan_connections: {}
 strongswan_config: |-
