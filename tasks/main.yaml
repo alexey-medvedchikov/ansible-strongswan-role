@@ -60,3 +60,13 @@
     mode: 0600
   notify:
   - ipsec reload
+
+- name: Setup /etc/strongswan.d/charon-logging.conf
+  template:
+    dest: /etc/strongswan.d/charon-logging.conf
+    src: charon-logging.conf.j2
+    owner: root
+    group: root
+    mode: 0600
+  notify:
+  - ipsec reload
