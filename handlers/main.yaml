@@ -2,3 +2,6 @@
 
 - name: ipsec reload
   shell: ipsec update && ipsec rereadall
+
+- name: charon sighup
+  shell: kill -SIGHUP $(cat /var/run/charon.pid) || true
