@@ -1,8 +1,8 @@
 config setup
   {{ strongswan_config | indent(2) }}
 
-{% for name in strongswan_connections.keys() %}
+{% for name, conn in strongswan_connections | dictsort %}
 conn {{ name }}
-  {{ strongswan_connections[name] | indent(2) }}
+  {{ conn | indent(2) }}
 
 {% endfor %}
