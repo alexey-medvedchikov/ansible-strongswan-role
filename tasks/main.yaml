@@ -61,10 +61,22 @@
   notify:
   - ipsec reload
 
+- name: Setup /etc/strongswan.d/charon.conf
+  copy:
+    dest: /etc/strongswan.d/charon.conf
+    content: |
+      {{ strongswan_charon_conf }}
+    owner: root
+    group: root
+    mode: 0600
+  notify:
+  - charon sighup
+
 - name: Setup /etc/strongswan.d/charon-logging.conf
-  template:
+  copy:
     dest: /etc/strongswan.d/charon-logging.conf
-    src: charon-logging.conf.j2
+    content: |
+      {{ strongswan_charon_logging }}
     owner: root
     group: root
     mode: 0600
