@@ -1,8 +1,12 @@
 config setup
-  {{ strongswan_config | indent(2) }}
+{% for opt_name, opt_value in strongswan_config | dictsort %}
+  {{ opt_name | trim }}={{ opt_value | trim }}
+{% endfor %}
 
-{% for name, conn in strongswan_connections | dictsort %}
+{% for name, options in strongswan_connections | dictsort %}
 conn {{ name }}
-  {{ conn | indent(2) }}
+{% for opt_name, opt_value in strongswan_connections | dictsort %}
+  {{ opt_name | trim }}={{ opt_value | trim }}
+{% endfor %}
 
 {% endfor %}

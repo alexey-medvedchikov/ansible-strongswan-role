@@ -40,29 +40,29 @@ List connections in ipsec.conf format:
 
 ```yaml
 strongswan_connections:
-  '%default': |-
-    ikelifetime=60m
-    keylife=20m
-    rekeymargin=3m
-    keyingtries=%forever
-    dpdaction=restart
-    dpddelay=5s
-    dpdtimeout=15s
-    inactivity=0
-    mobike=no
+  "%default":
+    ikelifetime: "60m"
+    keylife: "20m"
+    rekeymargin: "3m"
+    keyingtries: "%forever"
+    dpdaction: "restart"
+    dpddelay: "5s"
+    dpdtimeout: "15s"
+    inactivity: "0"
+    mobike: "no"
 
-  'vpn-1': |-
-    keyexchange=ikev2
-    esp=aes256gcm128-aes256gmac
-    left=%any
-    leftcert=some.server.tld.pem
-    leftid=@some.server.tld
-    leftsubnet=0.0.0.0/0
-    leftfirewall=yes
-    right=10.10.10.10
-    rightid=@my.peer.tld
-    rightsubnet=0.0.0.0/0
-    auto=start
+  "vpn-1": |-
+    keyexchange: "ikev2"
+    esp: "aes256gcm128-aes256gmac"
+    left: "%any"
+    leftcert: "some.server.tld.pem"
+    leftid: "@some.server.tld"
+    leftsubnet: "0.0.0.0/0"
+    leftfirewall: "yes"
+    right: "10.10.10.10"
+    rightid: "@my.peer.tld"
+    rightsubnet: "0.0.0.0/0"
+    auto: "start"
 ```
 
 Specify secrets:
